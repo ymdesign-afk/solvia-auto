@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://0ab38104-1c75-4429-8f6a-dc95be2a1988.vip.gensparksite.com/sitemap.xml
