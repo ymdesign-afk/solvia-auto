@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>サイト仕様書｜株式会社Solviaオート商会</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Noto Sans JP', 'Helvetica Neue', Arial, sans-serif; font-size: 15px; line-height: 1.7; color: #333; background: #f5f5f0; }
+
+    /* ── ページヘッダー ── */
+    .page-header {
+      background: linear-gradient(135deg, #1a3a5c 0%, #2d5f8a 100%);
+      color: white; padding: 60px 40px; text-align: center;
+    }
+    .page-header .badge {
+      display: inline-block; background: rgba(212,184,106,0.25); border: 1px solid #D4B86A;
+      color: #D4B86A; font-size: 0.75rem; letter-spacing: 0.1em; padding: 4px 14px;
+      border-radius: 50px; margin-bottom: 16px; text-transform: uppercase;
+    }
+    .page-header h1 { font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
+    .page-header .subtitle { opacity: 0.8; font-size: 0.9rem; margin-bottom: 20px; }
+    .page-header .meta { display: flex; justify-content: center; gap: 24px; font-size: 0.8rem; opacity: 0.7; flex-wrap: wrap; }
+    .page-header .meta span::before { margin-right: 4px; }
+
+    /* ── 目次 ── */
+    .toc {
+      background: white; max-width: 900px; margin: 32px auto;
+      border-radius: 12px; padding: 32px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    .toc h2 { font-size: 1.1rem; color: #1a3a5c; margin-bottom: 16px; }
+    .toc ol { padding-left: 20px; }
+    .toc li { margin-bottom: 8px; }
+    .toc a { color: #2d5f8a; text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+
+    /* ── セクション共通 ── */
+    .section {
+      background: white; max-width: 900px; margin: 24px auto;
+      border-radius: 12px; padding: 40px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    .section-header {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 28px; padding-bottom: 16px; border-bottom: 2px solid #1a3a5c;
+    }
+    .section-num {
+      background: #1a3a5c; color: white; width: 36px; height: 36px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.9rem; flex-shrink: 0;
+    }
+    .section-header h2 { font-size: 1.4rem; color: #1a3a5c; }
+
+    /* ── 小見出し ── */
+    .section h3 {
+      font-size: 1.05rem; color: #1a3a5c; margin: 28px 0 12px;
+      padding-left: 10px; border-left: 3px solid #D4B86A;
+    }
+    .section h4 {
+      font-size: 0.95rem; color: #444; margin: 20px 0 8px; font-weight: 700;
+    }
+
+    /* ── テーブル ── */
+    table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+    th {
+      background: #1a3a5c; color: white; padding: 10px 14px;
+      text-align: left; font-size: 0.85rem;
+    }
+    td { padding: 10px 14px; border-bottom: 1px solid #e8e8e8; font-size: 0.9rem; vertical-align: top; }
+    tr:nth-child(even) td { background: #f8f7f4; }
+
+    /* ── インライン要素 ── */
+    code {
+      background: #f3f3f3; padding: 2px 6px;
+      border-radius: 4px; font-family: monospace; font-size: 0.85rem;
+    }
+    .tag {
+      display: inline-block; background: #e8f0f8; color: #1a3a5c;
+      padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; margin: 2px;
+    }
+    .tip {
+      background: #fff8e6; border-left: 3px solid #D4B86A;
+      padding: 12px 16px; margin: 16px 0; border-radius: 0 6px 6px 0; font-size: 0.9rem;
+    }
+    .alert {
+      background: #fff3f3; border-left: 3px solid #e05555;
+      padding: 12px 16px; margin: 16px 0; border-radius: 0 6px 6px 0; font-size: 0.9rem;
+    }
+
+    /* ── 画像カード ── */
+    .image-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+    .image-card { border: 1px solid #e8e8e8; border-radius: 8px; padding: 16px; }
+    .image-card .filename { font-weight: 700; font-size: 0.85rem; color: #1a3a5c; margin-bottom: 8px; font-family: monospace; }
+    .image-card p { font-size: 0.85rem; color: #666; margin-bottom: 4px; }
+
+    /* ── カラースウォッチ ── */
+    .swatch { width: 40px; height: 24px; border-radius: 4px; display: inline-block; vertical-align: middle; }
+
+    /* ── ステータスバッジ ── */
+    .status-ok   { display: inline-block; background: #e6f4ea; color: #2a7a3b; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; }
+    .status-warn { display: inline-block; background: #fff3e0; color: #b45309; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; }
+    .status-todo { display: inline-block; background: #e8f0f8; color: #1a3a5c; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; }
+
+    /* ── 印刷用 ── */
+    @media print {
+      body { background: white; }
+      .section { box-shadow: none; border: 1px solid #ddd; }
+    }
+
+    /* ── フッター ── */
+    .page-footer {
+      text-align: center; padding: 32px; color: #888;
+      font-size: 0.8rem; background: #f5f5f0; margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ======================================
+     ページヘッダー
+     ====================================== -->
+<div class="page-header">
+  <div class="badge">Site Specification Document</div>
+  <h1>サイト仕様書</h1>
+  <p class="subtitle">株式会社Solviaオート商会 — 公式Webサイト 設計・実装記録</p>
+  <div class="meta">
+    <span>📅 最終更新: 2026年3月</span>
+    <span>🌐 ドメイン: www.solviainfo.jp</span>
+    <span>📄 対象ページ: 4ページ</span>
+    <span>✅ バージョン: v0.3</span>
+  </div>
+</div>
+
+<!-- ======================================
+     目次
+     ====================================== -->
+<nav class="toc">
+  <h2>📋 目次</h2>
+  <ol>
+    <li><a href="#section1">サイト構造・コンテンツ</a> — ページ構成・見出し・本文・フォーム</li>
+    <li><a href="#section2">デザインシステム</a> — カラー・タイポグラフィ・ボタン・スペーシング</li>
+    <li><a href="#section3">画像・メディア素材</a> — 画像ファイル・アイコン・フォント</li>
+    <li><a href="#section4">レイアウト構造</a> — セクション順序・カラム構成・ブレークポイント</li>
+    <li><a href="#section5">SEO・メタ情報</a> — title/description・OGP・JSON-LD・sitemap</li>
+    <li><a href="#section6">インタラクション・機能仕様</a> — アニメーション・フォーム・JavaScript</li>
+  </ol>
+</nav>
+
+<!-- ======================================
+     01 サイト構造・コンテンツ
+     ====================================== -->
+<section class="section" id="section1">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <h2>サイト構造・コンテンツ</h2>
+  </div>
+
+  <h3>ページ構成</h3>
+  <table>
+    <tr><th>ページ名</th><th>ファイル名</th><th>URL スラッグ（推奨）</th><th>役割</th></tr>
+    <tr>
+      <td>トップページ</td>
+      <td><code>index.html</code></td>
+      <td><code>/</code></td>
+      <td>メインランディング・企業情報・サービス紹介</td>
+    </tr>
+    <tr>
+      <td>お問い合わせ</td>
+      <td><code>contact.html</code></td>
+      <td><code>/contact</code></td>
+      <td>お問い合わせフォーム</td>
+    </tr>
+    <tr>
+      <td>特定商取引法に基づく表記</td>
+      <td><code>tokushoho.html</code></td>
+      <td><code>/tokushoho</code></td>
+      <td>法的開示ページ（必須）</td>
+    </tr>
+    <tr>
+      <td>プライバシーポリシー</td>
+      <td><code>privacy.html</code></td>
+      <td><code>/privacy-policy</code></td>
+      <td>個人情報取扱い方針（必須）</td>
+    </tr>
+  </table>
+
+  <h3>ナビゲーションメニュー</h3>
+  <table>
+    <tr><th>メニュー項目</th><th>リンク先</th><th>種別</th><th>備考</th></tr>
+    <tr><td>About</td><td>#about</td><td>アンカー</td><td>トップページ内</td></tr>
+    <tr><td>サービス</td><td>#services</td><td>アンカー</td><td>トップページ内</td></tr>
+    <tr><td>選ばれる理由</td><td>#features</td><td>アンカー</td><td>トップページ内</td></tr>
+    <tr><td>ご購入の流れ</td><td>#flow</td><td>アンカー</td><td>トップページ内</td></tr>
+    <tr><td>FAQ</td><td>#faq</td><td>アンカー</td><td>トップページ内</td></tr>
+    <tr><td>Contact</td><td>contact.html</td><td>ページ遷移</td><td>ゴールドボタン</td></tr>
+  </table>
+
+  <h3>各ページの見出し構造（H1〜H3）</h3>
+
+  <h4>index.html（トップページ）</h4>
+  <table>
+    <tr><th>レベル</th><th>テキスト</th><th>セクション</th></tr>
+    <tr><td>H1</td><td>一台一台に、正直な情報を。</td><td>ヒーロー</td></tr>
+    <tr><td>H2</td><td>VISION｜中古車選びの新しいかたち</td><td>About（Vision）</td></tr>
+    <tr><td>H2</td><td>MISSION｜正直な情報で納得の1台を</td><td>About（Mission）</td></tr>
+    <tr><td>H2</td><td>SERVICE</td><td>サービス</td></tr>
+    <tr><td>H2</td><td>選ばれる6つの理由</td><td>特徴</td></tr>
+    <tr><td>H2</td><td>ご購入の流れ</td><td>購入フロー</td></tr>
+    <tr><td>H2</td><td>よくあるご質問</td><td>FAQ</td></tr>
+    <tr><td>H2</td><td>まずは、お気軽にご相談ください。</td><td>CTAバナー</td></tr>
+    <tr><td>H2</td><td>会社情報</td><td>会社情報テーブル</td></tr>
+    <tr><td>H3</td><td>中古車販売</td><td>SERVICE 1</td></tr>
+    <tr><td>H3</td><td>注文販売</td><td>SERVICE 2</td></tr>
+    <tr><td>H3</td><td>下取り・買取</td><td>SERVICE 3</td></tr>
+    <tr><td>H3</td><td>状態を正直に、すべて開示</td><td>理由①</td></tr>
+    <tr><td>H3</td><td>全国オークションから1台を厳選</td><td>理由②</td></tr>
+    <tr><td>H3</td><td>押し売りなし。あなたのペースで</td><td>理由③</td></tr>
+    <tr><td>H3</td><td>陸送・全国対応</td><td>理由④</td></tr>
+    <tr><td>H3</td><td>ローン対応・頭金なし相談可</td><td>理由⑤</td></tr>
+    <tr><td>H3</td><td>LINEでのやりとりOK</td><td>理由⑥</td></tr>
+    <tr><td>H3</td><td>①まずはご相談</td><td>フロー1</td></tr>
+    <tr><td>H3</td><td>②ヒアリング・ご提案</td><td>フロー2</td></tr>
+    <tr><td>H3</td><td>③お車のご説明</td><td>フロー3</td></tr>
+    <tr><td>H3</td><td>④ご契約</td><td>フロー4</td></tr>
+    <tr><td>H3</td><td>⑤ご納車・アフターサポート</td><td>フロー5</td></tr>
+  </table>
+
+  <h4>contact.html（お問い合わせ）</h4>
+  <table>
+    <tr><th>レベル</th><th>テキスト</th><th>セクション</th></tr>
+    <tr><td>H1</td><td>お問い合わせ</td><td>ページタイトル</td></tr>
+    <tr><td>H2</td><td>お問い合わせフォーム</td><td>フォームセクション</td></tr>
+    <tr><td>H2</td><td>会社情報</td><td>会社情報テーブル</td></tr>
+  </table>
+
+  <h4>tokushoho.html（特定商取引法）</h4>
+  <table>
+    <tr><th>レベル</th><th>テキスト</th><th>セクション</th></tr>
+    <tr><td>H1</td><td>特定商取引法に基づく表記</td><td>ページタイトル</td></tr>
+  </table>
+
+  <h4>privacy.html（プライバシーポリシー）</h4>
+  <table>
+    <tr><th>レベル</th><th>テキスト</th><th>セクション</th></tr>
+    <tr><td>H1</td><td>プライバシーポリシー</td><td>ページタイトル</td></tr>
+    <tr><td>H2</td><td>第1条（個人情報の定義）</td><td>条項</td></tr>
+    <tr><td>H2</td><td>第2条（収集する個人情報）</td><td>条項</td></tr>
+    <tr><td>H2</td><td>第3条（個人情報の利用目的）</td><td>条項</td></tr>
+    <tr><td>H2</td><td>第4条（第三者への提供）</td><td>条項</td></tr>
+    <tr><td>H2</td><td>第5条（個人情報の安全管理）</td><td>条項</td></tr>
+    <tr><td>H2</td><td>第6条（開示・訂正・削除）</td><td>条項</td></tr>
+    <tr><td>H2</td><td>第7条（Cookieの使用）</td><td>条項</td></tr>
+    <tr><td>H2</td><td>第8条（お問い合わせ窓口）</td><td>条項</td></tr>
+  </table>
+
+  <h3>各セクションの本文・コピー原稿</h3>
+
+  <h4>ヒーローセクション</h4>
+  <table>
+    <tr><th>要素</th><th>テキスト</th></tr>
+    <tr><td>キャッチコピー（H1）</td><td>一台一台に、正直な情報を。</td></tr>
+    <tr><td>英語サブタイトル</td><td>Honest Information for Every Car</td></tr>
+    <tr><td>本文</td><td>在庫を持たない注文販売スタイルで、全国のオークションから<br>あなたの希望にぴったりの1台を、正直な情報とともにご提案します。</td></tr>
+    <tr><td>CTAボタン</td><td>無料でご相談する</td></tr>
+    <tr><td>スクロールインジケーター</td><td>SCROLL</td></tr>
+  </table>
+
+  <h4>トラストバー（信頼訴求 4項目）</h4>
+  <table>
+    <tr><th>アイコン（Font Awesome）</th><th>テキスト</th></tr>
+    <tr><td><code>fas fa-file-alt</code></td><td>正直な状態開示</td></tr>
+    <tr><td><code>fas fa-car</code></td><td>新車・中古車対応</td></tr>
+    <tr><td><code>fas fa-handshake</code></td><td>押し売りなし</td></tr>
+    <tr><td><code>fas fa-truck-fast</code></td><td>陸送・全国対応</td></tr>
+  </table>
+
+  <h4>Aboutセクション（Vision / Mission）</h4>
+  <table>
+    <tr><th>要素</th><th>テキスト</th></tr>
+    <tr><td>Vision 見出し</td><td>VISION｜中古車選びの新しいかたち</td></tr>
+    <tr><td>Vision 本文</td><td>中古車市場は、情報が不透明なことが多い。<br>私たちは「知らされない」ではなく「ちゃんと知る」を当たり前にしたい。<br>選ぶ人が納得できる情報を、誠実に届ける。それが私たちのスタイルです。</td></tr>
+    <tr><td>Mission 見出し</td><td>MISSION｜正直な情報で納得の1台を</td></tr>
+    <tr><td>Mission 本文</td><td>あなたの予算・使い方・好みを聞かせてください。<br>全国のオークションから最適な1台を探し、状態も価格も包み隠さずお伝えします。<br>ゴリ押しなし。あなたが「これにします」と言える瞬間を一緒に作りたいと思っています。</td></tr>
+  </table>
+
+  <h4>サービスセクション</h4>
+  <table>
+    <tr><th>サービス名</th><th>説明文</th></tr>
+    <tr><td>中古車販売</td><td>全国のオークション・業者から厳選した中古車をご提供。状態・履歴を正直にお伝えします。</td></tr>
+    <tr><td>注文販売</td><td>「こんな車に乗りたい」というご要望をもとに、全国からあなたにぴったりの1台を探します。</td></tr>
+    <tr><td>下取り・買取</td><td>現在お乗りの車の下取り・買取も承ります。まずはお気軽にご相談ください。</td></tr>
+  </table>
+
+  <h4>選ばれる6つの理由</h4>
+  <table>
+    <tr><th>No.</th><th>アイコン</th><th>タイトル</th><th>説明文</th></tr>
+    <tr><td>①</td><td><code>fas fa-clipboard-check</code></td><td>状態を正直に、すべて開示</td><td>傷・走行距離・修復歴など、気になる情報をすべて開示します。「後から知った」がないように。</td></tr>
+    <tr><td>②</td><td><code>fas fa-award</code></td><td>全国オークションから1台を厳選</td><td>在庫を持たず、ご要望に合わせて全国のオークションから最適な車両を仕入れます。</td></tr>
+    <tr><td>③</td><td><code>fas fa-shield-alt</code></td><td>押し売りなし。あなたのペースで</td><td>「今すぐ決めてください」は言いません。納得いくまでご検討ください。</td></tr>
+    <tr><td>④</td><td><code>fas fa-truck-fast</code></td><td>陸送・全国対応</td><td>全国どこへでも陸送でお届けします。東京に来られなくても大丈夫です。</td></tr>
+    <tr><td>⑤</td><td><code>fas fa-credit-card</code></td><td>ローン対応・頭金なし相談可</td><td>提携ローン会社をご利用いただけます。頭金なしでのご相談も承っています。</td></tr>
+    <tr><td>⑥</td><td><code>fab fa-line</code></td><td>LINEでのやりとりOK</td><td>LINEでの商談・質問対応も可能です。お気軽にメッセージをどうぞ。</td></tr>
+  </table>
+
+  <h4>購入フロー（5ステップ）</h4>
+  <table>
+    <tr><th>STEP</th><th>アイコン</th><th>タイトル</th><th>説明文</th></tr>
+    <tr><td>01</td><td><code>fas fa-comment</code></td><td>まずはご相談</td><td>お問い合わせフォームまたはLINEからご連絡ください。予算・希望車種・使い方など、なんでもお聞かせください。</td></tr>
+    <tr><td>02</td><td><code>fas fa-search</code></td><td>ヒアリング・ご提案</td><td>ご要望をもとに、最適な車種・グレードをご提案します。全国のオークション情報もご案内します。</td></tr>
+    <tr><td>03</td><td><code>fas fa-info-circle</code></td><td>お車のご説明</td><td>仕入れ候補の車両について、状態・履歴・価格を詳しくご説明します。わからないことは何でも聞いてください。</td></tr>
+    <tr><td>04</td><td><code>fas fa-file-signature</code></td><td>ご契約</td><td>ご納得いただけましたらご契約をお願いします。ローンのご相談もこの段階で対応します。</td></tr>
+    <tr><td>05</td><td><code>fas fa-truck</code></td><td>ご納車・アフターサポート</td><td>ご指定の場所へお届けします。納車後のご質問・アフターサポートもお気軽にご連絡ください。</td></tr>
+  </table>
+
+  <h4>FAQ（よくあるご質問）</h4>
+  <table>
+    <tr><th>質問</th><th>回答</th></tr>
+    <tr>
+      <td>新車も対応できますか？</td>
+      <td>はい、対応可能です。メーカー・車種のご希望をお聞かせいただければ、新車のお見積もりもご提案します。まずはお気軽にご相談ください。</td>
+    </tr>
+    <tr>
+      <td>遠方でも購入できますか？</td>
+      <td>はい、全国対応しています。陸送でのお届けが可能ですので、実際に来店いただかなくてもお取引できます。お車の状態はしっかりご説明しますのでご安心ください。</td>
+    </tr>
+    <tr>
+      <td>査定だけでもお願いできますか？</td>
+      <td>もちろんです。査定のみのご相談も大歓迎です。売却をご検討中の方はもちろん、「まず価格を知りたい」という方もお気軽にどうぞ。</td>
+    </tr>
+    <tr>
+      <td>車検はついていますか？</td>
+      <td>車両によって異なります。車検の有無や残存期間はご説明の際にお伝えします。車検整備をご希望の場合は別途ご相談ください。</td>
+    </tr>
+    <tr>
+      <td>ローンは使えますか？</td>
+      <td>ご利用いただけます。提携ローン会社をご紹介します。頭金なしでのご相談も承っておりますので、まずはお気軽にお問い合わせください。審査基準はローン会社により異なります。</td>
+    </tr>
+    <tr>
+      <td>まずは話を聞いてもらうだけでも大丈夫ですか？</td>
+      <td>もちろんです。「まだ決めていない」「なんとなく気になっている」という段階でも、ぜひご相談ください。無理な提案や勧誘は一切しません。</td>
+    </tr>
+  </table>
+
+  <h3>フォームフィールド一覧（contact.html）</h3>
+  <table>
+    <tr><th>フィールド名</th><th>タイプ</th><th>必須</th><th>プレースホルダー</th><th>備考</th></tr>
+    <tr><td>お名前</td><td>text</td><td>✅</td><td>例）山田 太郎</td><td></td></tr>
+    <tr><td>メールアドレス</td><td>email</td><td>✅</td><td>例）example@email.com</td><td></td></tr>
+    <tr><td>電話番号</td><td>tel</td><td>—</td><td>例）090-0000-0000</td><td>任意</td></tr>
+    <tr><td>お問い合わせ種別</td><td>select</td><td>✅</td><td>—（選択肢あり）</td><td>下記参照</td></tr>
+    <tr><td>メッセージ</td><td>textarea</td><td>✅</td><td>お気軽にご相談ください。</td><td></td></tr>
+    <tr><td>プライバシーポリシー同意</td><td>checkbox</td><td>✅</td><td>—</td><td>未チェックで送信不可</td></tr>
+  </table>
+
+  <h4>お問い合わせ種別 選択肢</h4>
+  <table>
+    <tr><th>#</th><th>選択肢テキスト</th></tr>
+    <tr><td>1</td><td>車両購入のご相談</td></tr>
+    <tr><td>2</td><td>注文販売について</td></tr>
+    <tr><td>3</td><td>下取り・買取のご相談</td></tr>
+    <tr><td>4</td><td>ローンについて</td></tr>
+    <tr><td>5</td><td>その他</td></tr>
+  </table>
+
+  <div class="tip">
+    ✅ 送信先メールアドレス: <strong>svpartners@solviainfo.jp</strong><br>
+    実際にメールを受け取るには <strong>Formspree</strong>（無料）での設定が必要です。<br>
+    手順: <a href="https://formspree.io/" target="_blank">formspree.io</a> でアカウント作成 → 「New Form」→ 送信先に svpartners@solviainfo.jp を登録 → 発行された URL を <code>js/main.js</code> の <code>FORMSPREE_ENDPOINT</code> に貼り付ける。<br>
+    ✅ <strong>設定済み: https://formspree.io/f/mwvrooqy</strong>
+  </div>
+</section>
+
+<!-- ======================================
+     02 デザインシステム
+     ====================================== -->
+<section class="section" id="section2">
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <h2>デザインシステム</h2>
+  </div>
+
+  <h3>カラーパレット</h3>
+  <table>
+    <tr><th>役割</th><th>変数名</th><th>HEXコード</th><th>サンプル</th><th>主な用途</th></tr>
+    <tr>
+      <td>プライマリ（メイン）</td>
+      <td><code>--primary</code></td>
+      <td><code>#1a3a5c</code></td>
+      <td><span class="swatch" style="background:#1a3a5c;"></span></td>
+      <td>ヘッダー背景、ボタン、見出し、トラストバー背景</td>
+    </tr>
+    <tr>
+      <td>プライマリ ライト</td>
+      <td><code>--primary-light</code></td>
+      <td><code>#2d5f8a</code></td>
+      <td><span class="swatch" style="background:#2d5f8a;"></span></td>
+      <td>ホバー、グラデーション</td>
+    </tr>
+    <tr>
+      <td>プライマリ ダーク</td>
+      <td><code>--primary-dark</code></td>
+      <td><code>#0f2438</code></td>
+      <td><span class="swatch" style="background:#0f2438;"></span></td>
+      <td>フッター、ダーク背景</td>
+    </tr>
+    <tr>
+      <td>アクセント（ゴールド）</td>
+      <td><code>--accent</code></td>
+      <td><code>#D4B86A</code></td>
+      <td><span class="swatch" style="background:#D4B86A;"></span></td>
+      <td>強調テキスト、アイコン、ボーダー、ボタン</td>
+    </tr>
+    <tr>
+      <td>アクセント ライト</td>
+      <td><code>--accent-light</code></td>
+      <td><code>#e8cc8a</code></td>
+      <td><span class="swatch" style="background:#e8cc8a;"></span></td>
+      <td>ホバー時の明るい金</td>
+    </tr>
+    <tr>
+      <td>アクセント ダーク</td>
+      <td><code>--accent-dark</code></td>
+      <td><code>#b09040</code></td>
+      <td><span class="swatch" style="background:#b09040;"></span></td>
+      <td>ホバー、プレスド状態</td>
+    </tr>
+    <tr>
+      <td>ホワイト</td>
+      <td><code>--white</code></td>
+      <td><code>#ffffff</code></td>
+      <td><span class="swatch" style="background:#ffffff;border:1px solid #ddd;"></span></td>
+      <td>背景、テキスト反転</td>
+    </tr>
+    <tr>
+      <td>オフホワイト</td>
+      <td><code>--off-white</code></td>
+      <td><code>#f8f7f4</code></td>
+      <td><span class="swatch" style="background:#f8f7f4;border:1px solid #ddd;"></span></td>
+      <td>交互セクション背景（About、Features、FAQ）</td>
+    </tr>
+    <tr>
+      <td>グレー（薄）</td>
+      <td><code>--gray-100</code></td>
+      <td><code>#f3f3f3</code></td>
+      <td><span class="swatch" style="background:#f3f3f3;border:1px solid #ddd;"></span></td>
+      <td>カード背景</td>
+    </tr>
+    <tr>
+      <td>グレー（中）</td>
+      <td><code>--gray-500</code></td>
+      <td><code>#8a8a8a</code></td>
+      <td><span class="swatch" style="background:#8a8a8a;"></span></td>
+      <td>補足テキスト、キャプション</td>
+    </tr>
+    <tr>
+      <td>ダーク背景</td>
+      <td><code>--dark-bg</code></td>
+      <td><code>#0d1f33</code></td>
+      <td><span class="swatch" style="background:#0d1f33;"></span></td>
+      <td>フッター背景</td>
+    </tr>
+    <tr>
+      <td>ダークカード</td>
+      <td><code>--dark-card</code></td>
+      <td><code>#1a2d42</code></td>
+      <td><span class="swatch" style="background:#1a2d42;"></span></td>
+      <td>フッター内カード</td>
+    </tr>
+    <tr>
+      <td>テキスト（標準）</td>
+      <td><code>--gray-700</code></td>
+      <td><code>#444444</code></td>
+      <td><span class="swatch" style="background:#444444;"></span></td>
+      <td>本文テキスト全般</td>
+    </tr>
+    <tr>
+      <td>テキスト（濃）</td>
+      <td><code>--black</code></td>
+      <td><code>#111111</code></td>
+      <td><span class="swatch" style="background:#111111;"></span></td>
+      <td>見出し</td>
+    </tr>
+    <tr>
+      <td>LINE グリーン</td>
+      <td><code>--line-green</code></td>
+      <td><code>#06c755</code></td>
+      <td><span class="swatch" style="background:#06c755;"></span></td>
+      <td>LINE 関連ボタン・アイコン</td>
+    </tr>
+  </table>
+
+  <h3>タイポグラフィ</h3>
+  <table>
+    <tr><th>要素</th><th>フォント</th><th>サイズ（PC）</th><th>サイズ（SP）</th><th>太さ</th><th>行高</th><th>備考</th></tr>
+    <tr>
+      <td>H1（ヒーロー）</td>
+      <td>Noto Sans JP</td>
+      <td>3.5rem</td>
+      <td>2.2rem</td>
+      <td>800</td>
+      <td>1.2</td>
+      <td>アクセントカラーでハイライト</td>
+    </tr>
+    <tr>
+      <td>H2（セクション）</td>
+      <td>Noto Sans JP</td>
+      <td>2rem</td>
+      <td>1.5rem</td>
+      <td>700</td>
+      <td>1.3</td>
+      <td>中央揃え、下線アクセント</td>
+    </tr>
+    <tr>
+      <td>H3（カード見出し）</td>
+      <td>Noto Sans JP</td>
+      <td>1.1〜1.2rem</td>
+      <td>1.0〜1.1rem</td>
+      <td>700</td>
+      <td>1.4</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>本文</td>
+      <td>Noto Sans JP</td>
+      <td>0.95rem</td>
+      <td>0.9rem</td>
+      <td>400</td>
+      <td>1.8</td>
+      <td>カラー: #444444</td>
+    </tr>
+    <tr>
+      <td>ロゴ テキスト（英字）</td>
+      <td>Inter</td>
+      <td>1.15rem</td>
+      <td>—</td>
+      <td>800</td>
+      <td>1.15</td>
+      <td>"Solvia" の表記、アクセントカラー</td>
+    </tr>
+    <tr>
+      <td>ロゴ テキスト（日本語）</td>
+      <td>Noto Sans JP</td>
+      <td>0.8rem</td>
+      <td>—</td>
+      <td>700</td>
+      <td>1.15</td>
+      <td>"オート商会" の表記</td>
+    </tr>
+    <tr>
+      <td>ナビゲーション</td>
+      <td>Noto Sans JP</td>
+      <td>0.85rem</td>
+      <td>—</td>
+      <td>500</td>
+      <td>—</td>
+      <td>文字間隔 0.05em</td>
+    </tr>
+  </table>
+
+  <h3>ボタンスタイル</h3>
+  <table>
+    <tr><th>種別</th><th>通常状態</th><th>ホバー状態</th><th>border-radius</th><th>パディング</th></tr>
+    <tr>
+      <td>プライマリボタン</td>
+      <td>背景: <code>#D4B86A</code><br>テキスト: <code>#1a3a5c</code></td>
+      <td>背景: <code>#ffffff</code><br>テキスト: <code>#1a3a5c</code><br>枠線: <code>#D4B86A</code><br>シャドウ: ゴールドグロー<br>上に 3px 浮く・1.03倍</td>
+      <td>50px（pill型）</td>
+      <td>14px 36px</td>
+    </tr>
+    <tr>
+      <td>セカンダリボタン</td>
+      <td>背景: transparent<br>テキスト: <code>#ffffff</code><br>枠線: <code>rgba(255,255,255,0.6)</code></td>
+      <td>背景: <code>#ffffff</code><br>テキスト: <code>#1a3a5c</code></td>
+      <td>50px（pill型）</td>
+      <td>14px 36px</td>
+    </tr>
+    <tr>
+      <td>Contact ボタン（ナビ）</td>
+      <td>背景: <code>#D4B86A</code><br>テキスト: <code>#1a3a5c</code><br>文字間隔: 0.05em</td>
+      <td>背景: <code>#ffffff</code><br>シャドウ: ゴールドグロー</td>
+      <td>50px</td>
+      <td>10px 24px</td>
+    </tr>
+  </table>
+
+  <h3>スペーシング・レイアウト</h3>
+  <table>
+    <tr><th>変数 / 名称</th><th>値</th><th>用途</th></tr>
+    <tr><td><code>--section-py</code></td><td>96px</td><td>セクション上下パディング</td></tr>
+    <tr><td><code>--container-max</code></td><td>1120px</td><td>コンテンツ最大幅</td></tr>
+    <tr><td><code>--radius-sm</code></td><td>6px</td><td>小さな角丸（ボタン内など）</td></tr>
+    <tr><td><code>--radius-md</code></td><td>12px</td><td>カード</td></tr>
+    <tr><td><code>--radius-lg</code></td><td>20px</td><td>大きなカード</td></tr>
+    <tr><td>ヘッダー高さ</td><td>72px</td><td>固定ヘッダー</td></tr>
+    <tr><td>フッターパディング</td><td>64px 0 24px</td><td>フッター内余白</td></tr>
+    <tr><td>カード間隔</td><td>24〜32px</td><td>グリッドギャップ</td></tr>
+  </table>
+
+  <h3>シャドウ</h3>
+  <table>
+    <tr><th>変数</th><th>値</th><th>用途</th></tr>
+    <tr><td><code>--shadow-sm</code></td><td><code>0 2px 8px rgba(0,0,0,0.08)</code></td><td>小カード</td></tr>
+    <tr><td><code>--shadow-md</code></td><td><code>0 8px 32px rgba(0,0,0,0.12)</code></td><td>通常カード</td></tr>
+    <tr><td><code>--shadow-lg</code></td><td><code>0 16px 48px rgba(0,0,0,0.16)</code></td><td>ホバー、モーダル</td></tr>
+  </table>
+</section>
+
+<!-- ======================================
+     03 画像・メディア素材
+     ====================================== -->
+<section class="section" id="section3">
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <h2>画像・メディア素材</h2>
+  </div>
+
+  <h3>画像ファイル一覧</h3>
+  <div class="image-list">
+    <div class="image-card">
+      <div class="filename">hero-bg-pc.webp</div>
+      <p>📍 使用箇所: ヒーローセクション（PC用背景）</p>
+      <p>🔤 ALT: 中古車販売・注文販売｜Solviaオート商会</p>
+      <p>📐 推奨サイズ: 1920×1080px 以上</p>
+      <p>💡 CSS background-image として使用</p>
+      <p>🖼 OGP 画像としても使用</p>
+    </div>
+    <div class="image-card">
+      <div class="filename">hero-bg-sp.webp</div>
+      <p>📍 使用箇所: ヒーローセクション（SP用背景）</p>
+      <p>🔤 ALT: 中古車販売・注文販売｜Solviaオート商会</p>
+      <p>📐 推奨サイズ: 750×1334px 以上</p>
+      <p>💡 768px 以下で PC 画像と自動切替</p>
+    </div>
+    <div class="image-card">
+      <div class="filename">logo-white.png</div>
+      <p>📍 使用箇所: ヘッダー（スクロール前・メニュー開時）、フッター</p>
+      <p>🔤 ALT: 株式会社Solviaオート商会｜中古車販売・注文販売</p>
+      <p>📐 高さ 36px（自動幅）</p>
+      <p>💡 透過 PNG（白抜き）</p>
+    </div>
+    <div class="image-card">
+      <div class="filename">logo-black.png</div>
+      <p>📍 使用箇所: ヘッダー（スクロール後）</p>
+      <p>🔤 ALT: 株式会社Solviaオート商会｜中古車販売・注文販売</p>
+      <p>📐 高さ 36px（自動幅）</p>
+      <p>💡 透過 PNG（ネイビー/黒抜き）</p>
+    </div>
+  </div>
+
+  <div class="tip" style="margin-top:20px;">
+    💡 現在の画像はすべて WebP 形式に変換済みです（ロゴ除く）。<br>
+    PNG 元データが必要な場合はスタッフに確認してください。
+  </div>
+
+  <h3>アイコンライブラリ（Font Awesome 6）</h3>
+  <table>
+    <tr><th>CDN URL</th></tr>
+    <tr><td><code>https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css</code></td></tr>
+  </table>
+
+  <table>
+    <tr><th>使用箇所</th><th>クラス名</th><th>絵文字イメージ</th></tr>
+    <tr><td>トラストバー: 状態開示</td><td><code>fas fa-file-alt</code></td><td>📄</td></tr>
+    <tr><td>トラストバー: 新車・中古車</td><td><code>fas fa-car</code></td><td>🚗</td></tr>
+    <tr><td>トラストバー: 押し売りなし</td><td><code>fas fa-handshake</code></td><td>🤝</td></tr>
+    <tr><td>トラストバー: 陸送・全国</td><td><code>fas fa-truck-fast</code></td><td>🚚</td></tr>
+    <tr><td>サービス: 中古車販売</td><td><code>fas fa-car-side</code></td><td>🚗</td></tr>
+    <tr><td>サービス: 注文販売</td><td><code>fas fa-search</code></td><td>🔍</td></tr>
+    <tr><td>サービス: 下取り・買取</td><td><code>fas fa-exchange-alt</code></td><td>🔄</td></tr>
+    <tr><td>理由①: 状態開示</td><td><code>fas fa-clipboard-check</code></td><td>📋</td></tr>
+    <tr><td>理由②: 全国厳選</td><td><code>fas fa-award</code></td><td>🏆</td></tr>
+    <tr><td>理由③: 押し売りなし</td><td><code>fas fa-shield-alt</code></td><td>🛡</td></tr>
+    <tr><td>理由④: 全国対応</td><td><code>fas fa-truck-fast</code></td><td>🚚</td></tr>
+    <tr><td>理由⑤: ローン</td><td><code>fas fa-credit-card</code></td><td>💳</td></tr>
+    <tr><td>理由⑥: LINE</td><td><code>fab fa-line</code></td><td>LINE</td></tr>
+    <tr><td>フロー Step 01</td><td><code>fas fa-comment</code></td><td>💬</td></tr>
+    <tr><td>フロー Step 02</td><td><code>fas fa-search</code></td><td>🔍</td></tr>
+    <tr><td>フロー Step 03</td><td><code>fas fa-info-circle</code></td><td>ℹ️</td></tr>
+    <tr><td>フロー Step 04</td><td><code>fas fa-file-signature</code></td><td>📝</td></tr>
+    <tr><td>フロー Step 05</td><td><code>fas fa-truck</code></td><td>🚚</td></tr>
+    <tr><td>Instagram（ヘッダー・フッター）</td><td><code>fab fa-instagram</code></td><td>📷</td></tr>
+  </table>
+
+  <h3>Webフォント</h3>
+  <table>
+    <tr><th>フォント名</th><th>用途</th><th>ウェイト</th><th>Google Fonts URL</th></tr>
+    <tr>
+      <td>Noto Sans JP</td>
+      <td>日本語全般</td>
+      <td>300, 400, 500, 700, 800</td>
+      <td><code>https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;800&amp;display=swap</code></td>
+    </tr>
+    <tr>
+      <td>Inter</td>
+      <td>英字（ロゴ・見出し英字部分）</td>
+      <td>400, 600, 700, 800</td>
+      <td><code>https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap</code></td>
+    </tr>
+  </table>
+</section>
+
+<!-- ======================================
+     04 レイアウト構造
+     ====================================== -->
+<section class="section" id="section4">
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <h2>レイアウト構造</h2>
+  </div>
+
+  <h3>トップページ セクション順序</h3>
+  <table>
+    <tr><th>順序</th><th>セクション名</th><th>背景色</th><th>主な要素</th></tr>
+    <tr><td>1</td><td>ヘッダー（固定）</td><td>透明 → 白（スクロール後）</td><td>ロゴ・社名・Instagramアイコン / ナビ / Contactボタン / ハンバーガー</td></tr>
+    <tr><td>2</td><td>ヒーロー</td><td>背景画像（PC/SP切替）</td><td>H1・英語サブタイトル・本文・CTAボタン・スクロールインジケーター</td></tr>
+    <tr><td>3</td><td>トラストバー</td><td>#1a3a5c（ネイビー）</td><td>4つの信頼訴求（アイコン + テキスト）</td></tr>
+    <tr><td>4</td><td>About（Vision / Mission）</td><td>#f8f7f4（オフホワイト）</td><td>2カード横並び</td></tr>
+    <tr><td>5</td><td>サービス</td><td>白</td><td>3カード横並び</td></tr>
+    <tr><td>6</td><td>選ばれる理由</td><td>#f8f7f4（オフホワイト）</td><td>6カード（3列 × 2行）</td></tr>
+    <tr><td>7</td><td>購入フロー</td><td>白</td><td>5ステップ横並び（PC） / 縦並び（SP）</td></tr>
+    <tr><td>8</td><td>FAQ</td><td>#f8f7f4（オフホワイト）</td><td>アコーディオン形式（6問）</td></tr>
+    <tr><td>9</td><td>CTAバナー</td><td>#1a3a5c（ネイビー）</td><td>H2・本文・ボタン（中央揃え）</td></tr>
+    <tr><td>10</td><td>会社情報</td><td>白</td><td>2カラム表（ラベル / 値）</td></tr>
+    <tr><td>11</td><td>フッター</td><td>#0d1f33（ダーク）</td><td>ロゴ・タグライン・Instagram / ナビ2列</td></tr>
+  </table>
+
+  <h3>カラム構成（PC / SP）</h3>
+  <table>
+    <tr><th>セクション</th><th>PC 構成</th><th>SP 構成</th></tr>
+    <tr><td>About（Vision/Mission）</td><td>50% / 50%（2カラム）</td><td>1カラム（縦積み）</td></tr>
+    <tr><td>サービス</td><td>33.3% × 3（3カラム）</td><td>1カラム（縦積み）</td></tr>
+    <tr><td>選ばれる理由</td><td>33.3% × 3（3列 2行）</td><td>50% × 2（2列 3行）</td></tr>
+    <tr><td>購入フロー</td><td>20% × 5（横 1列）</td><td>1カラム（縦積み）</td></tr>
+    <tr><td>会社情報テーブル</td><td>左ラベル 30% / 右値 70%</td><td>縦積み</td></tr>
+    <tr><td>フッター</td><td>ブランドエリア 40% / ナビ 60%</td><td>1カラム（縦積み）</td></tr>
+  </table>
+
+  <h3>ブレークポイント</h3>
+  <table>
+    <tr><th>名称</th><th>幅</th><th>主な変化</th></tr>
+    <tr><td>スマートフォン</td><td>≤ 768px</td><td>ハンバーガーメニュー表示、各グリッド縦積み、ヒーロー背景 SP 切替</td></tr>
+    <tr><td>タブレット / PC</td><td>≥ 769px</td><td>PC 用レイアウト適用</td></tr>
+  </table>
+
+  <h3>ヘッダー 詳細仕様</h3>
+  <table>
+    <tr><th>状態</th><th>背景</th><th>ロゴ</th><th>テキスト色</th><th>Instagramアイコン</th><th>ハンバーガー</th></tr>
+    <tr><td>スクロール前（透明）</td><td>グラデーション → 透明</td><td>白ロゴ（logo-white.png）</td><td>白</td><td>グラデーション（固定）</td><td>白</td></tr>
+    <tr><td>スクロール後（白背景）</td><td>白 + box-shadow</td><td>黒ロゴ（logo-black.png）</td><td>ネイビー</td><td>グラデーション（固定）</td><td>ネイビー</td></tr>
+    <tr><td>メニュー開時</td><td>ネイビー（フルスクリーン）</td><td>白ロゴ</td><td>白</td><td>グラデーション（固定）</td><td>白（✕形状）</td></tr>
+  </table>
+
+  <h3>ヘッダー 左側グループ（header__left）</h3>
+  <div class="tip">
+    ヘッダーの左側は <code>.header__left</code> ラッパーでグループ化されています。<br>
+    <strong>表示順（左→右）:</strong> ロゴ画像 → 社名テキスト（Solvia / オート商会） → Instagramアイコン<br>
+    グループ内の gap は 8px。<code>flex-shrink: 0</code> で縮小防止。
+  </div>
+
+  <h3>フッター 構成</h3>
+  <table>
+    <tr><th>エリア</th><th>内容</th></tr>
+    <tr><td>ブランドエリア（左）</td><td>白ロゴ + 社名テキスト、タグライン、Instagramリンク</td></tr>
+    <tr><td>ナビ MENU（右）</td><td>About / サービス / 選ばれる理由 / ご購入の流れ / FAQ</td></tr>
+    <tr><td>ナビ PAGES（右）</td><td>お問い合わせ / 特定商取引法 / プライバシーポリシー</td></tr>
+    <tr><td>コピーライト</td><td>© 2025 Solviaオート商会 All Rights Reserved.</td></tr>
+  </table>
+</section>
+
+<!-- ======================================
+     05 SEO・メタ情報
+     ====================================== -->
+<section class="section" id="section5">
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <h2>SEO・メタ情報</h2>
+  </div>
+
+  <h3>各ページの title / meta description</h3>
+  <table>
+    <tr><th>ページ</th><th>title</th><th>meta description</th></tr>
+    <tr>
+      <td>index.html</td>
+      <td>中古車販売・注文販売・全国対応｜株式会社Solviaオート商会【東京】</td>
+      <td>東京発、全国対応の中古車販売店。注文販売・下取り・買取に対応。押し売りなし・正直な情報開示で、納得できる1台をご提案します。</td>
+    </tr>
+    <tr>
+      <td>contact.html</td>
+      <td>お問い合わせ｜株式会社Solviaオート商会</td>
+      <td>Solviaオート商会へのお問い合わせページです。中古車購入・注文販売・下取り・買取のご相談はお気軽にどうぞ。</td>
+    </tr>
+    <tr>
+      <td>tokushoho.html</td>
+      <td>特定商取引法に基づく表記｜株式会社Solviaオート商会</td>
+      <td>株式会社Solviaオート商会の特定商取引法に基づく表記ページです。</td>
+    </tr>
+    <tr>
+      <td>privacy.html</td>
+      <td>プライバシーポリシー｜株式会社Solviaオート商会</td>
+      <td>株式会社Solviaオート商会のプライバシーポリシーです。個人情報の取り扱いについてご説明します。</td>
+    </tr>
+  </table>
+
+  <h3>OGP（Open Graph Protocol）設定値</h3>
+  <table>
+    <tr><th>プロパティ</th><th>値（index.html）</th></tr>
+    <tr><td><code>og:title</code></td><td>中古車販売・注文販売・全国対応｜株式会社Solviaオート商会【東京】</td></tr>
+    <tr><td><code>og:description</code></td><td>東京発、全国対応の中古車販売店。注文販売・下取り・買取に対応。押し売りなし・正直な情報開示で、納得できる1台をご提案します。</td></tr>
+    <tr><td><code>og:image</code></td><td><code>/images/hero-bg-pc.webp</code>（フルURL：カスタムドメイン取得後に更新）</td></tr>
+    <tr><td><code>og:url</code></td><td>カスタムドメイン取得後に更新</td></tr>
+    <tr><td><code>og:type</code></td><td><code>website</code></td></tr>
+    <tr><td><code>og:locale</code></td><td><code>ja_JP</code></td></tr>
+    <tr><td><code>twitter:card</code></td><td><code>summary_large_image</code></td></tr>
+  </table>
+
+  <h3>JSON-LD 構造化データ（実装済み）</h3>
+  <table>
+    <tr><th>ページ</th><th>スキーマタイプ</th><th>主要プロパティ</th><th>状態</th></tr>
+    <tr>
+      <td>index.html</td>
+      <td><code>AutoDealer</code></td>
+      <td>name, url, description, address, telephone, openingHours,<br>areaServed（東京・神奈川・埼玉・千葉・全国）</td>
+      <td><span class="status-ok">✅ 実装済</span></td>
+    </tr>
+    <tr>
+      <td>index.html</td>
+      <td><code>FAQPage</code></td>
+      <td>6つの Q&amp;A ペア（acceptedAnswer 付き）</td>
+      <td><span class="status-ok">✅ 実装済</span></td>
+    </tr>
+    <tr>
+      <td>contact.html</td>
+      <td><code>ContactPage</code></td>
+      <td>name, url, description</td>
+      <td><span class="status-ok">✅ 実装済</span></td>
+    </tr>
+    <tr>
+      <td>tokushoho.html</td>
+      <td><code>WebPage</code></td>
+      <td>name, url, description</td>
+      <td><span class="status-ok">✅ 実装済</span></td>
+    </tr>
+  </table>
+
+  <h3>canonical URL 一覧</h3>
+  <div class="tip">
+    ⚠️ 現在は仮 URL（gensparksite.com）を使用中。カスタムドメイン取得後に全ページの canonical を更新してください。
+  </div>
+  <table>
+    <tr><th>ページ</th><th>現在の canonical URL</th><th>推奨 URL スラッグ（変更後）</th></tr>
+    <tr><td>index.html</td><td><code>https://www.solviainfo.jp/</code></td><td><code>https://www.solviainfo.jp/</code></td></tr>
+    <tr><td>contact.html</td><td><code>https://www.solviainfo.jp/contact.html</code></td><td><code>https://www.solviainfo.jp/contact</code></td></tr>
+    <tr><td>tokushoho.html</td><td><code>https://www.solviainfo.jp/tokushoho.html</code></td><td><code>https://www.solviainfo.jp/tokushoho</code></td></tr>
+    <tr><td>privacy.html</td><td><code>https://www.solviainfo.jp/privacy.html</code></td><td><code>https://www.solviainfo.jp/privacy-policy</code></td></tr>
+  </table>
+
+  <h3>sitemap.xml 登録 URL</h3>
+  <table>
+    <tr><th>URL</th><th>priority</th><th>changefreq</th></tr>
+    <tr><td><code>/index.html</code></td><td>1.0</td><td>monthly</td></tr>
+    <tr><td><code>/contact.html</code></td><td>0.8</td><td>yearly</td></tr>
+    <tr><td><code>/tokushoho.html</code></td><td>0.5</td><td>yearly</td></tr>
+    <tr><td><code>/privacy.html</code></td><td>0.3</td><td>yearly</td></tr>
+  </table>
+
+  <h3>主要キーワード</h3>
+  <div>
+    <span class="tag">中古車販売</span>
+    <span class="tag">注文販売</span>
+    <span class="tag">全国対応</span>
+    <span class="tag">東京</span>
+    <span class="tag">下取り</span>
+    <span class="tag">買取</span>
+    <span class="tag">ローン対応</span>
+    <span class="tag">押し売りなし</span>
+    <span class="tag">正直な情報開示</span>
+    <span class="tag">Solviaオート商会</span>
+    <span class="tag">中古車 東京</span>
+    <span class="tag">銀座 中古車</span>
+  </div>
+
+  <h3>SEO 対応済み項目一覧</h3>
+  <table>
+    <tr><th>対応項目</th><th>内容</th><th>状態</th></tr>
+    <tr><td>title / description 最適化</td><td>全4ページで設定済み</td><td><span class="status-ok">✅ 完了</span></td></tr>
+    <tr><td>OGP・Twitter Card</td><td>全4ページで設定済み（SNSシェア対応）</td><td><span class="status-ok">✅ 完了</span></td></tr>
+    <tr><td>JSON-LD 構造化データ</td><td>AutoDealer / FAQPage / ContactPage / WebPage</td><td><span class="status-ok">✅ 完了</span></td></tr>
+    <tr><td>canonical タグ</td><td>全4ページで設定済み</td><td><span class="status-ok">✅ 完了</span></td></tr>
+    <tr><td>sitemap.xml</td><td>作成済み（4URL 登録）</td><td><span class="status-ok">✅ 完了</span></td></tr>
+    <tr><td>robots.txt</td><td>作成済み</td><td><span class="status-ok">✅ 完了</span></td></tr>
+    <tr><td>画像 ALT テキスト</td><td>全画像にキーワード入り ALT を設定</td><td><span class="status-ok">✅ 完了</span></td></tr>
+    <tr><td>WebP 変換</td><td>ヒーロー背景を WebP 化（約 85% 削減）</td><td><span class="status-ok">✅ 完了</span></td></tr>
+    <tr><td>見出し階層最適化</td><td>H1〜H3 の正しい使用</td><td><span class="status-ok">✅ 完了</span></td></tr>
+    <tr><td>モバイル対応</td><td>768px 以下でレスポンシブ表示</td><td><span class="status-ok">✅ 完了</span></td></tr>
+    <tr><td>Google Search Console 登録</td><td>カスタムドメイン取得後に実施</td><td><span class="status-todo">📌 未着手</span></td></tr>
+    <tr><td>Google ビジネスプロフィール</td><td>カスタムドメイン取得後に実施</td><td><span class="status-todo">📌 未着手</span></td></tr>
+    <tr><td>GA4（Google Analytics）</td><td>カスタムドメイン取得後に実施</td><td><span class="status-todo">📌 未着手</span></td></tr>
+  </table>
+</section>
+
+<!-- ======================================
+     06 インタラクション・機能仕様
+     ====================================== -->
+<section class="section" id="section6">
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <h2>インタラクション・機能仕様</h2>
+  </div>
+
+  <h3>スクロール連動ヘッダー</h3>
+  <table>
+    <tr><th>項目</th><th>仕様</th></tr>
+    <tr><td>発火条件</td><td>スクロール量 &gt; 50px</td></tr>
+    <tr><td>トリガー</td><td>JavaScript <code>window.addEventListener('scroll', ...)</code></td></tr>
+    <tr><td>クラス操作</td><td>ヘッダーに <code>.scrolled</code> クラスを付与 / 削除</td></tr>
+    <tr><td>CSS 変化</td><td>背景: 透明 → 白、ロゴ: 白 → 黒、テキスト: 白 → ネイビー</td></tr>
+    <tr><td>アニメーション</td><td><code>transition: all 0.3s ease</code></td></tr>
+  </table>
+
+  <h3>ハンバーガーメニュー（SP用）</h3>
+  <table>
+    <tr><th>項目</th><th>仕様</th></tr>
+    <tr><td>表示条件</td><td>≤ 768px</td></tr>
+    <tr><td>開閉トリガー</td><td>ハンバーガーボタンクリック</td></tr>
+    <tr><td>クラス付与</td><td>header・nav に <code>.nav-is-open</code> クラスを付与</td></tr>
+    <tr><td>オーバーレイ</td><td>フルスクリーン、背景色: <code>#1a3a5c</code></td></tr>
+    <tr><td>ボタン変化</td><td>3本線 → ✕（CSS アニメーション）</td></tr>
+    <tr><td>メニュー項目タップ</td><td>自動的にメニューを閉じる</td></tr>
+  </table>
+
+  <h3>FAQ アコーディオン</h3>
+  <table>
+    <tr><th>項目</th><th>仕様</th></tr>
+    <tr><td>動作</td><td>質問クリックで回答の表示 / 非表示を切替</td></tr>
+    <tr><td>実装方法</td><td>JavaScript で <code>max-height</code> をトグル + <code>.faq__item--open</code> クラス付与</td></tr>
+    <tr><td>アイコン</td><td>「＋」→「－」</td></tr>
+    <tr><td>アニメーション</td><td><code>transition: max-height 0.3s ease</code></td></tr>
+  </table>
+
+  <h3>スクロールアニメーション（AOS）</h3>
+  <table>
+    <tr><th>項目</th><th>仕様</th></tr>
+    <tr><td>ライブラリ</td><td>AOS（Animate On Scroll）v2.3.4</td></tr>
+    <tr><td>CSS CDN</td><td><code>https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css</code></td></tr>
+    <tr><td>JS CDN</td><td><code>https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js</code></td></tr>
+    <tr><td>初期化</td><td><code>AOS.init({ duration: 600, once: true })</code></td></tr>
+    <tr><td>主なアニメーション</td><td><code>data-aos="fade-up"</code>（カード・セクション）</td></tr>
+    <tr><td>遅延</td><td>複数要素は 0ms / 100ms / 200ms で順次表示（<code>data-aos-delay</code>）</td></tr>
+  </table>
+
+  <h3>ヒーロー背景画像 PC/SP 切替</h3>
+  <table>
+    <tr><th>項目</th><th>仕様</th></tr>
+    <tr><td>PC 画像</td><td><code>hero-bg-pc.webp</code>（初期表示）</td></tr>
+    <tr><td>SP 画像</td><td><code>hero-bg-sp.webp</code>（768px 以下）</td></tr>
+    <tr><td>切替方法</td><td>JavaScript: <code>window.innerWidth ≤ 768</code> で動的に <code>background-image</code> を変更</td></tr>
+    <tr><td>リサイズ対応</td><td><code>window.addEventListener('resize', ...)</code></td></tr>
+    <tr><td>object-position（SP）</td><td>構図を最適化するため調整済み</td></tr>
+  </table>
+
+  <h3>お問い合わせフォーム</h3>
+  <table>
+    <tr><th>項目</th><th>仕様</th></tr>
+    <tr><td>送信先</td><td><code>svpartners@solviainfo.jp</code>（Formspree 経由）<br><span class="status-warn">⚠️ Formspree で Form ID を取得し、js/main.js の FORMSPREE_ENDPOINT を書き換えてから本番運用してください</span></td></tr>
+    <tr><td>バリデーション</td><td>HTML5 <code>required</code> 属性 + JavaScript（送信前チェック）</td></tr>
+    <tr><td>送信後</td><td>サンクスメッセージ表示（フォーム非表示）</td></tr>
+    <tr><td>プライバシー同意</td><td>チェックボックス必須（未チェックで送信不可）</td></tr>
+    <tr><td>推奨実装サービス</td><td>Formspree / EmailJS など（サーバー不要）</td></tr>
+  </table>
+
+  <h3>Instagram アイコン仕様</h3>
+  <table>
+    <tr><th>項目</th><th>仕様</th></tr>
+    <tr><td>リンク先</td><td><code>https://www.instagram.com/solviaauto.official/</code></td></tr>
+    <tr><td>配置（ヘッダー）</td><td>ヘッダー左側 <code>.header__left</code> 内（ロゴ・社名の右横）</td></tr>
+    <tr><td>配置（フッター）</td><td>ブランドエリアのタグライン下</td></tr>
+    <tr><td>アイコンカラー</td><td>Instagram 公式グラデーション（オレンジ → ピンク → パープル）</td></tr>
+    <tr><td>ホバー</td><td>スケール 1.15 倍</td></tr>
+    <tr><td>サイズ（ヘッダー）</td><td>32px × 32px</td></tr>
+    <tr><td>実装方法</td><td>Font Awesome アイコンに CSS <code>background: linear-gradient</code> + <code>-webkit-background-clip: text</code></td></tr>
+  </table>
+
+  <h3>外部ライブラリ 一覧</h3>
+  <table>
+    <tr><th>ライブラリ</th><th>バージョン</th><th>用途</th><th>CDN URL</th></tr>
+    <tr>
+      <td>Font Awesome</td>
+      <td>6.4.0</td>
+      <td>アイコン全般</td>
+      <td><code>cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css</code></td>
+    </tr>
+    <tr>
+      <td>AOS</td>
+      <td>2.3.4</td>
+      <td>スクロールアニメーション</td>
+      <td><code>cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.{css,js}</code></td>
+    </tr>
+    <tr>
+      <td>Google Fonts</td>
+      <td>—</td>
+      <td>Noto Sans JP / Inter</td>
+      <td><code>fonts.googleapis.com</code></td>
+    </tr>
+  </table>
+</section>
+
+<!-- ======================================
+     ページフッター
+     ====================================== -->
+<div class="page-footer">
+  <strong>株式会社Solviaオート商会 — サイト仕様書 v0.3</strong><br>
+  最終更新: 2026年3月 ｜ 作成: Genspark<br>
+  <span style="color:#D4B86A;">このドキュメントはサイト設計・実装の記録です。</span>
+</div>
+
+</body>
+</html>
