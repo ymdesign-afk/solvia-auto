@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ファイルダウンロード｜Solviaオート商会</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f5f5f0; color: #333; font-size: 15px; line-height: 1.7; }
+    .header { background: linear-gradient(135deg, #1a3a5c, #2d5f8a); color: white; padding: 40px; text-align: center; }
+    .header h1 { font-size: 1.6rem; margin-bottom: 8px; }
+    .header p { opacity: 0.8; font-size: 0.9rem; }
+    .container { max-width: 860px; margin: 32px auto; padding: 0 20px; }
+    .alert { background: #fff8e6; border-left: 4px solid #D4B86A; padding: 16px 20px; border-radius: 0 8px 8px 0; margin-bottom: 32px; font-size: 0.92rem; }
+    .alert strong { color: #1a3a5c; }
+    .section { background: white; border-radius: 12px; padding: 28px 32px; margin-bottom: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+    .section h2 { font-size: 1.1rem; color: #1a3a5c; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #1a3a5c; display: flex; align-items: center; gap: 8px; }
+    .file-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+    .file-card { border: 1px solid #e8e8e8; border-radius: 8px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+    .file-card .name { font-size: 0.85rem; font-weight: 700; color: #1a3a5c; font-family: monospace; word-break: break-all; }
+    .file-card .size { font-size: 0.78rem; color: #888; }
+    .file-card .path { font-size: 0.78rem; color: #aaa; }
+    .btn { display: inline-block; background: #1a3a5c; color: white; padding: 8px 16px; border-radius: 6px; font-size: 0.82rem; text-decoration: none; text-align: center; cursor: pointer; border: none; width: 100%; transition: background 0.2s; }
+    .btn:hover { background: #2d5f8a; }
+    .btn-img { background: #D4B86A; color: #1a3a5c; font-weight: 700; }
+    .btn-img:hover { background: #c8a84b; }
+    .step { display: flex; gap: 12px; margin-bottom: 16px; align-items: flex-start; }
+    .step-num { background: #1a3a5c; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+    .step p { font-size: 0.92rem; }
+    .step code { background: #f3f3f3; padding: 2px 6px; border-radius: 4px; font-size: 0.82rem; }
+    .folder-badge { display: inline-block; background: #e8f0f8; color: #1a3a5c; padding: 2px 8px; border-radius: 4px; font-size: 0.78rem; margin-left: 8px; font-family: monospace; }
+    footer { text-align: center; padding: 24px; color: #aaa; font-size: 0.8rem; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📦 ファイルダウンロード</h1>
+  <p>株式会社Solviaオート商会 — Vercel移行用ファイル一式</p>
+</div>
+
+<div class="container">
+
+  <div class="alert">
+    <strong>📋 GitHub / Vercel へのアップロード手順</strong><br><br>
+    <div class="step">
+      <div class="step-num">1</div>
+      <p>下記の「テキストファイル」をすべてダウンロードしてください。</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <p>「画像ファイル」は右クリック →「名前を付けて保存」でダウンロードしてください。</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <p>GitHubで <code>solvia-auto</code> リポジトリを作成し、フォルダ構成を守ってアップロード：<br>
+        <code>css/style.css</code>、<code>css/pages.css</code>、<code>js/main.js</code>、<code>images/</code>（画像）
+      </p>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <p>Vercelで GitHub リポジトリを連携してデプロイ完了！</p>
+    </div>
+  </div>
+
+  <!-- テキストファイル：ルート -->
+  <div class="section">
+    <h2>📄 テキストファイル（ルート）</h2>
+    <div class="file-grid">
+
+      <div class="file-card">
+        <div class="name">index.html</div>
+        <div class="size">約 27 KB</div>
+        <div class="path">/ （ルート）</div>
+        <a class="btn" href="index.html" download="index.html">ダウンロード</a>
+      </div>
+
+      <div class="file-card">
+        <div class="name">contact.html</div>
+        <div class="size">約 12 KB</div>
+        <div class="path">/ （ルート）</div>
+        <a class="btn" href="contact.html" download="contact.html">ダウンロード</a>
+      </div>
+
+      <div class="file-card">
+        <div class="name">tokushoho.html</div>
+        <div class="size">約 8 KB</div>
+        <div class="path">/ （ルート）</div>
+        <a class="btn" href="tokushoho.html" download="tokushoho.html">ダウンロード</a>
+      </div>
+
+      <div class="file-card">
+        <div class="name">privacy.html</div>
+        <div class="size">約 8 KB</div>
+        <div class="path">/ （ルート）</div>
+        <a class="btn" href="privacy.html" download="privacy.html">ダウンロード</a>
+      </div>
+
+      <div class="file-card">
+        <div class="name">sitemap.xml</div>
+        <div class="size">約 1 KB</div>
+        <div class="path">/ （ルート）</div>
+        <a class="btn" href="sitemap.xml" download="sitemap.xml">ダウンロード</a>
+      </div>
+
+      <div class="file-card">
+        <div class="name">robots.txt</div>
+        <div class="size">約 0.1 KB</div>
+        <div class="path">/ （ルート）</div>
+        <a class="btn" href="robots.txt" download="robots.txt">ダウンロード</a>
+      </div>
+
+      <div class="file-card">
+        <div class="name">site-spec.html</div>
+        <div class="size">約 40 KB</div>
+        <div class="path">/ （仕様書）</div>
+        <a class="btn" href="site-spec.html" download="site-spec.html">ダウンロード</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- テキストファイル：css/ -->
+  <div class="section">
+    <h2>🎨 CSS ファイル <span class="folder-badge">css/</span></h2>
+    <div class="file-grid">
+
+      <div class="file-card">
+        <div class="name">style.css</div>
+        <div class="size">約 37 KB</div>
+        <div class="path">css/style.css</div>
+        <a class="btn" href="css/style.css" download="style.css">ダウンロード</a>
+      </div>
+
+      <div class="file-card">
+        <div class="name">pages.css</div>
+        <div class="size">約 11 KB</div>
+        <div class="path">css/pages.css</div>
+        <a class="btn" href="css/pages.css" download="pages.css">ダウンロード</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- テキストファイル：js/ -->
+  <div class="section">
+    <h2>⚙️ JavaScript ファイル <span class="folder-badge">js/</span></h2>
+    <div class="file-grid">
+
+      <div class="file-card">
+        <div class="name">main.js</div>
+        <div class="size">約 8 KB</div>
+        <div class="path">js/main.js</div>
+        <a class="btn" href="js/main.js" download="main.js">ダウンロード</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 画像ファイル -->
+  <div class="section">
+    <h2>🖼️ 画像ファイル <span class="folder-badge">images/</span></h2>
+    <p style="font-size:0.88rem;color:#888;margin-bottom:16px;">※ 画像は「ダウンロード」ボタンを押してください。保存先は <code>images/</code> フォルダを作って入れてください。</p>
+    <div class="file-grid">
+
+      <div class="file-card">
+        <div class="name">hero-bg-pc.webp</div>
+        <div class="size">約 138 KB</div>
+        <div class="path">images/hero-bg-pc.webp</div>
+        <a class="btn btn-img" href="images/hero-bg-pc.webp" download="hero-bg-pc.webp">ダウンロード</a>
+      </div>
+
+      <div class="file-card">
+        <div class="name">hero-bg-sp.webp</div>
+        <div class="size">約 124 KB</div>
+        <div class="path">images/hero-bg-sp.webp</div>
+        <a class="btn btn-img" href="images/hero-bg-sp.webp" download="hero-bg-sp.webp">ダウンロード</a>
+      </div>
+
+      <div class="file-card">
+        <div class="name">logo-white.png</div>
+        <div class="size">約 28 KB</div>
+        <div class="path">images/logo-white.png</div>
+        <a class="btn btn-img" href="images/logo-white.png" download="logo-white.png">ダウンロード</a>
+      </div>
+
+      <div class="file-card">
+        <div class="name">logo-black.png</div>
+        <div class="size">約 52 KB</div>
+        <div class="path">images/logo-black.png</div>
+        <a class="btn btn-img" href="images/logo-black.png" download="logo-black.png">ダウンロード</a>
+      </div>
+
+      <div class="file-card">
+        <div class="name">logo-white.webp</div>
+        <div class="size">約 18 KB</div>
+        <div class="path">images/logo-white.webp</div>
+        <a class="btn btn-img" href="images/logo-white.webp" download="logo-white.webp">ダウンロード</a>
+      </div>
+
+      <div class="file-card">
+        <div class="name">logo-black.webp</div>
+        <div class="size">約 9 KB</div>
+        <div class="path">images/logo-black.webp</div>
+        <a class="btn btn-img" href="images/logo-black.webp" download="logo-black.webp">ダウンロード</a>
+      </div>
+
+      <div class="file-card">
+        <div class="name">ceo-nozawa.jpg</div>
+        <div class="size">約 86 KB</div>
+        <div class="path">images/ceo-nozawa.jpg</div>
+        <a class="btn btn-img" href="images/ceo-nozawa.jpg" download="ceo-nozawa.jpg">ダウンロード</a>
+      </div>
+
+      <div class="file-card">
+        <div class="name">hero-bg.jpg</div>
+        <div class="size">約 1.7 MB</div>
+        <div class="path">images/hero-bg.jpg（予備）</div>
+        <a class="btn btn-img" href="images/hero-bg.jpg" download="hero-bg.jpg">ダウンロード</a>
+      </div>
+
+      <div class="file-card">
+        <div class="name">hero-bg2.jpg</div>
+        <div class="size">約 243 KB</div>
+        <div class="path">images/hero-bg2.jpg（予備）</div>
+        <a class="btn btn-img" href="images/hero-bg2.jpg" download="hero-bg2.jpg">ダウンロード</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- フォルダ構成 -->
+  <div class="section">
+    <h2>📁 GitHub アップロード時のフォルダ構成</h2>
+    <pre style="background:#f3f3f3;padding:20px;border-radius:8px;font-size:0.85rem;line-height:1.9;overflow-x:auto;">solvia-auto/
+├── index.html
+├── contact.html
+├── tokushoho.html
+├── privacy.html
+├── sitemap.xml
+├── robots.txt
+├── site-spec.html
+├── css/
+│   ├── style.css
+│   └── pages.css
+├── js/
+│   └── main.js
+└── images/
+    ├── hero-bg-pc.webp   ← 必須
+    ├── hero-bg-sp.webp   ← 必須
+    ├── logo-white.png    ← 必須
+    ├── logo-black.png    ← 必須
+    ├── logo-white.webp
+    ├── logo-black.webp
+    └── ceo-nozawa.jpg</pre>
+  </div>
+
+</div>
+
+<footer>
+  株式会社Solviaオート商会 — Vercel移行用ファイル一式 | 2026年3月
+</footer>
+
+</body>
+</html>
